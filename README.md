@@ -1,4 +1,4 @@
-# vue-test
+# Weather Look Up App
 
 ## Project setup
 ```
