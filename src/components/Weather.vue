@@ -55,7 +55,7 @@ export default {
   name: "WeatherLookup",
   data() {
     return {
-      zip: "",
+      zip: this.getZip(),
       current: {},
       forecast: {},
       errors: []
@@ -103,8 +103,17 @@ export default {
       fetchData();
     },
 
+    saveZip() {
+      window.localStorage.setItem("zip", this.zip);
+    },
+
+    getZip() {
+      return window.localStorage.getItem("zip") || "64114";
+    },
+
     handleSubmit() {
       if (this.zip) {
+        this.saveZip();
         this.getData("current");
         this.getData("forecast");
       }
