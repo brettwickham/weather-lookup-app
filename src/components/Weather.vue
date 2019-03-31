@@ -69,7 +69,10 @@ export default {
     },
     formatDate: function(value) {
       if (!isNaN(value)) return "";
-      return moment(value).format("MMM D h a");
+      return moment
+        .utc(value)
+        .local()
+        .format("MMM D h a");
     }
   },
 
@@ -106,6 +109,10 @@ export default {
         this.getData("forecast");
       }
     }
+  },
+
+  mounted() {
+    this.handleSubmit();
   }
 };
 </script>
