@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app">
     <h1>Look Up US Weather</h1>
     <WeatherLookup/>
   </div>
@@ -17,8 +17,9 @@ export default {
 </script>
 
 <style>
-#app {
+.app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

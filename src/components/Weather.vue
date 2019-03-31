@@ -2,13 +2,16 @@
   <div class="current">
     <form @submit.prevent="handleSubmit()">
       <h3>Enter a zip code below:</h3>
-      <input v-model="zip" placeholder="Zip Code">
-      <button>Get Weather</button>
+      <div class="fieldset">
+        <label for="zip">Zip Code</label>
+        <input v-model="zip" name="zip" placeholder="Zip Code">
+        <button type="submit">Get Weather</button>
+      </div>
     </form>
     <div v-if="current.main">
       <h3>{{current.name}}</h3>
       <ul class="list-unstyled">
-        <li>Currently</li>
+        <li class="text-bold">Currently</li>
         <ul class="list-inline list-padded">
           <li>{{current.weather[0].main}}</li>
           <li>{{current.main.temp | round}}&deg;</li>
@@ -125,3 +128,60 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+}
+
+label,
+input,
+button {
+  font-size: 16px !important;
+  line-height: 1.2;
+  font-size: inherit;
+  padding: 0.4em;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+input,
+button {
+  min-height: 36px;
+}
+
+input {
+  border: 1px solid #2c3e50;
+  border-radius: 0;
+  min-width: 150px;
+}
+
+button {
+  min-width: 150px;
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #2c3e50;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 0;
+  opacity: 1;
+  transition: 0.2s opacity ease-in-out;
+}
+
+button:hover,
+button:focus,
+button:active {
+  background-color: #2c3e50;
+  color: #fff;
+  border-color: #2c3e50;
+  opacity: 0.8;
+  outline: none;
+}
+</style>
