@@ -16,16 +16,16 @@
           <li>{{current.weather[0].main}}</li>
           <li>{{current.main.temp | round}}&deg;</li>
           <li>
-            <span class="text-red">{{current.main.temp_max | round }}&deg;</span> /
-            <span class="text-blue">{{current.main.temp_min | round }}&deg;</span>
+            <span class="text-red">{{forecast24LowHigh.high | round }}&deg;</span> /
+            <span class="text-blue">{{forecast24LowHigh.low | round }}&deg;</span>
           </li>
         </ul>
       </ul>
     </div>
     <div class="text-left" v-if="forecast.list">
-      <h3>Short-Range Forecast</h3>
+      <h3>24-Hour Forecast</h3>
       <ul class="list-unstyled list-striped list-padded">
-        <li v-for="day in forecast.list.slice(0, 10)" :key="day.dt">
+        <li v-for="day in forecast24" :key="day.dt">
           <span class="text-bold">{{day.dt_txt | formatDate}}</span>
           <ul class="list-inline">
             <li>
@@ -61,6 +61,8 @@ export default {
       zip: this.getZip(),
       current: {},
       forecast: {},
+      forecast24: [],
+      forecast24LowHigh: {},
       errors: []
     };
   },
@@ -75,7 +77,7 @@ export default {
       return moment
         .utc(value)
         .local()
-        .format("MMM D h a");
+        .format("h a");
     }
   },
 
@@ -99,10 +101,15 @@ export default {
         try {
           const response = await axios.get(url);
           this[type] = response.data;
+          if (type === "forecast") {
+            this[`${type}24`] = this.getForecast24();
+            this[`${type}24LowHigh`] = this.getForecast24LowHigh();
+          }
         } catch (error) {
           this.errors.push(error);
         }
       };
+
       fetchData();
     },
 
@@ -112,6 +119,24 @@ export default {
 
     getZip() {
       return window.localStorage.getItem("zip") || "64114";
+    },
+
+    getForecast24() {
+      return this.forecast.list.slice(0, 8);
+    },
+
+    getForecast24LowHigh() {
+      const min = this.forecast24.reduce((a, b) => {
+        return b.main.temp < a.main.temp ? b : a;
+      });
+      const max = this.forecast24.reduce((a, b) => {
+        return b.main.temp > a.main.temp ? b : a;
+      });
+
+      return {
+        low: min.main.temp,
+        high: max.main.temp
+      };
     },
 
     handleSubmit() {
